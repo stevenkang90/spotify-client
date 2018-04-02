@@ -42,6 +42,10 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     testImplementation 'junit:junit:4.12'
+    testCompile "com.nhaarman:mockito-kotlin:1.5.0"
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    testCompile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.2'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

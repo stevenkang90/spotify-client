@@ -1,3 +1,3 @@
 package com.example.spotifywebapi.models
 
-class PlaylistResponse(val list: List<Playlist.Full>? = null)
+class PlaylistResponse(val items: List<Playlist.Simplified>)
