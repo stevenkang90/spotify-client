@@ -6,6 +6,6 @@ import retrofit2.Retrofit
 
 class SpotifyWebService(val service: SpotifyPlaylistInterface = Network.createService(SpotifyPlaylistInterface::class.java)) {
 
-    fun getMyPlayLists(oauthToken: String) = service.getMyPlaylists("Bearer $oauthToken")
+    fun getMyPlayLists(oauthToken: String) = service.getMyPlaylists("Bearer $oauthToken", 3, 2)
 
 }

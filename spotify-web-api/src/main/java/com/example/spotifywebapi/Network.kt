@@ -24,19 +24,15 @@ import javax.net.ssl.X509TrustManager
 object Network {
     private const val TIMEOUT_VALUE = 15L
     private const val LONG_TIMOUT_VALUE = 45L
-    private const val CACHE_DIR_NAME = "http_client_cache"
-    private const val CACHE_DIR_SIZE = 50L * 1024L * 1024L // 50M
 
     const val USER_AGENT = "MySkyApp/Android/${BuildConfig.VERSION_NAME}"
-
-    private const val DEVICE_CORRELATION_ID_HEADER = "device-correlation-id"
 
     val httpClient = newOkHttpClient()
 
     private val defaultServiceClient = addDefaultHeader()
     private val longTimeoutServiceClient = addLongTimeoutHeader()
 
-    private val jacksonFactory: JacksonConverterFactory = JacksonConverterFactory.create()
+    private val jacksonFactory: JacksonConverterFactory = JacksonConverterFactory.create(ignoreUnknownObjectMapper())
 
     private val rxJavaCallAdapterFactory = RxJava2CallAdapterFactory.create()
 
