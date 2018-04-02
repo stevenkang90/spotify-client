@@ -3,7 +3,7 @@ package com.example.spotifywebapi.models
 import com.fasterxml.jackson.annotation.JsonProperty
 
 
-sealed class PlayList(val collaborative: Boolean,
+sealed class Playlist(val collaborative: Boolean,
                       @JsonProperty("external_urls") val externalUrl: ExternalUrl,
                       val href: String,
                       val id: String,
@@ -27,7 +27,7 @@ sealed class PlayList(val collaborative: Boolean,
                      @JsonProperty("snapshot_id") snapshotId: String,
                      tracks: List<PlaylistTrack>,
                      type: String,
-                     uri: String): PlayList(collaborative, externalUrl, href, id, images, name, owner, public, snapshotId, tracks, type, uri)
+                     uri: String): Playlist(collaborative, externalUrl, href, id, images, name, owner, public, snapshotId, tracks, type, uri)
 
     class Full(collaborative: Boolean,
                val description: String,
@@ -42,7 +42,7 @@ sealed class PlayList(val collaborative: Boolean,
                @JsonProperty("snapshot_id") snapshotId: String,
                tracks: List<PlaylistTrack>,
                type: String,
-               uri: String): PlayList(collaborative, externalUrl, href, id, images, name, owner, public, snapshotId, tracks, type, uri)
+               uri: String): Playlist(collaborative, externalUrl, href, id, images, name, owner, public, snapshotId, tracks, type, uri)
 }
 
 class PlaylistTrack(//Timestamps are returned in ISO 8601 format as Coordinated Universal Time (UTC) with a zero offset: YYYY-MM-DDTHH:MM:SSZ

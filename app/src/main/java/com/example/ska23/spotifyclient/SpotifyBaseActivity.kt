@@ -6,35 +6,27 @@ import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import android.content.Intent
 import com.spotify.sdk.android.authentication.AuthenticationRequest
-
-
-
-
+import com.spotify.sdk.android.authentication.LoginActivity
+import com.spotify.sdk.android.player.Config
+import com.spotify.sdk.android.player.Spotify
+import com.spotify.sdk.android.player.SpotifyPlayer
 
 open class SpotifyBaseActivity : AppCompatActivity() {
 
-    val REQUEST_CODE = 1337
-    val REDIRECT_URI = "yourcustomprotocol://callback"
-    protected val CLIENT_ID: String = ""
+    val REQUEST_CODE = 1121
+
+    companion object {
+        var token: String? = null
+    }
+
+    protected open var REDIRECT_URI : String? = null
+    protected open var CLIENT_ID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        if(!SpotifyAuthManager.isTokenValid) {
-            val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
-
-            builder.setScopes(arrayOf("streaming"))
-            val request = builder.build()
-
-            AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request)
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
         super.onActivityResult(requestCode, resultCode, intent)
@@ -46,7 +38,28 @@ open class SpotifyBaseActivity : AppCompatActivity() {
             when (response.type) {
             // Response was successful and contains auth token
                 AuthenticationResponse.Type.TOKEN -> {
-                    SpotifyAuthManager.token = response.accessToken
+                    token = response.accessToken
+
+                    AuthenticationClient.stopLoginActivity(this, LoginActivity.REQUEST_CODE)
+                    val playerConfig = Config(this, response.accessToken, CLIENT_ID)
+
+                    Spotify.getPlayer(playerConfig, this, object : SpotifyPlayer.InitializationObserver {
+                        override fun onInitialized(spotifyPlayer: SpotifyPlayer) {
+                            val player = spotifyPlayer
+//                            player.addConnectionStateCallback(this@LauncherActivity)
+//                            player.addNotificationCallback(this@LauncherActivity)
+
+                            SpotifyAuthManager.player = player
+
+                            player.playUri(null, "spotify:track:4tnbcPfOSZq5VAU67XxIdN", 0, 0)
+                        }
+
+                        override fun onError(throwable: Throwable) {
+
+                        }
+
+
+                    })
                 }
 
             // Auth flow returned an error
